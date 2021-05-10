@@ -317,9 +317,9 @@ const initialState = {
             color : 'B'
         }
     ],
-    tableau : [],
-    freecells : [],
-    wincells : [],
+    tableau : [[], [], [], [], [], [], [], []],
+    freecells : [{}, {}, {}, {}],
+    wincells : [{}, {}, {}, {}],
     builder : []
 }
 
@@ -328,16 +328,51 @@ export const GlobalContext = createContext(initialState);
 
 // Provider component - so we can import into App.js
 export const GlobalProvider = ({ children }) => { // children is destructured
-    const [state/* , dispatch */] = useReducer(AppReducer, initialState); // reducer uses dispatch
+    const [state, dispatch] = useReducer(AppReducer, initialState); // reducer uses dispatch
 
-    /* let randomize = () => {
-        state.
-    } */
+    let shuffleDeck = () => {
+        dispatch({
+            type: 'SHUFFLE_DECK'
+        });
+    }
+
+    let dealDeck = () => {
+        dispatch({
+            type: 'DEAL_DECK'
+        });
+    }
+
+    let allowDrop = (e) => {
+        e.preventDefault();
+    }
+
+    let drag = (e) => {
+        //console.log(e);
+        e.dataTransfer.setData("text", e.target.id);
+        /* dispatch({
+            type: 'BLOCK_FREECELL',
+            payload: e.target.id
+        }); */
+    }
+
+    let drop = (e) => {
+        e.preventDefault();
+        var data = e.dataTransfer.getData("text");
+        console.log("dropCard",e);
+        e.target.appendChild(document.getElementById(data));
+    }
 
     // value property uses an object
     return (
     <GlobalContext.Provider value={{ // allows for tracks to be passed to deeper components        
-        deck: state.deck
+        deck: state.deck,
+        freecells: state.freecells,
+        tableau: state.tableau,
+        shuffleDeck: shuffleDeck,
+        dealDeck: dealDeck,
+        drop: drop,
+        drag: drag,
+        allowDrop: allowDrop
     }}>
     {children}
     </GlobalContext.Provider>);

@@ -1,15 +1,29 @@
-import React, { useContext } from 'react'
+import React, { useContext, /* useEffect */ } from 'react'
 import { GlobalContext } from '../context/GlobalState';
-import { Card } from "./Card";
+import { Cell } from "./Cell";
+import { TableauCell } from "./TableauCell";
+import { Freecells } from './Freecells';
+import { useEvent } from './useEvent';
 
 export const Tableau = () => {
-    const { deck } = useContext(GlobalContext);
+    // hooks
+    const { deck, tableau, shuffleDeck, dealDeck } = useContext(GlobalContext);
+    
+    useEvent('load', dealDeck);
+    //let shuffledDeck = shuffleDeck(deck);
+    //console.log("tableau", tableau);
 
     return (
-        <>  
-            <ul className="tableau">
-                { deck.map(card => <Card key={card.id} card={card} />)}
-            </ul>
-        </>
+        <div className="container">
+            <Freecells />
+            <button onClick={() => dealDeck(deck)}>New Game</button>
+            <div className="tableau">
+                { 
+                    tableau.map((card, index) => {
+                        return <Cell key={'tid'+index} cell={index} cards={card} type="tableauCell" />
+                    })
+                }
+            </div>
+        </div>
     )
 }
