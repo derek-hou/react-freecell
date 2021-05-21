@@ -9,10 +9,10 @@ export const Cell = ({ cell, cards, type }) => {
     console.log("cards", cards);
     console.log("type", type); */
     return (
-        <div id={type === 'FreeCell' ? `fc` + cell : `tc` + cell} onDrop={(e) => drop(e)} onDragOver={(e) => allowDrop(e)}>
+        <div id={type === 'FreeCell' ? `fc` + cell : `tc` + cell} onDrop={(e) => drop(e, e.target)} onDragOver={(e) => allowDrop(e)}>
             { 
                 cards.map((card, index) => {
-                    return <Card key={index} card={card} />
+                    return <Card key={index} card={card} cell={index} />
                 })
             }
         </div>

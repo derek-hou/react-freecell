@@ -1,7 +1,6 @@
 import React, { useContext, /* useEffect */ } from 'react'
 import { GlobalContext } from '../context/GlobalState';
 import { Cell } from "./Cell";
-import { TableauCell } from "./TableauCell";
 import { Freecells } from './Freecells';
 import { useEvent } from './useEvent';
 

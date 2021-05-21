@@ -55,9 +55,15 @@ const appReducer = (state, action) => {
                     if (copyState.deck[i]) {
                         copyState.tableau[j].push(copyState.deck[i]); // copy the card from the deck to tableau
                     }
-                    i++; // go to the next card                   
+                    i++; // go to the next card
                 }
             }
+
+            // make the last card of each tableau a top card
+            for(let j=0; j<copyState.tableau.length;j++) {
+                copyState.tableau[j][copyState.tableau[j].length-1].top = true;
+            }
+            
             //console.log("DEAL_DECK", copyState);
             return copyState;
         case 'BLOCK_FREECELL':

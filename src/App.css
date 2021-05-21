@@ -4,12 +4,17 @@ ul {
 }
 
 .card {
-  padding: 50px 25px;
-  border: solid thin;
+  width: 100px;
+  border: solid 1px;
   border-radius: 5px;
-  display: inline-block;
   position: relative;
   top: 5px;
+}
+.card .build {
+  width: 98px;
+  padding: 48px 0px;
+  border: solid 1px;
+  border-radius: 5px;
 }
 
 .freecells {
