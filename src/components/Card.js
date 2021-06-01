@@ -6,7 +6,7 @@ export const Card = ({ card }) => {
     const { drag, drop, allowDrop } = useContext(GlobalContext);
 
     return (
-        <div id={card.id} className={card.top === true ? `top card` : `card`} draggable={card.top === true ? true : false} onDragStart={card.top === true ? (e) => drag(e) : null}>
+        <div id={card.id} className={card.top === true ? `top card` : `card`} draggable="true" onDragStart={(e) => drag(e)}>
             <span>{card.number}</span>
             <span>{card.suit}</span>
             <span>{card.color}</span>

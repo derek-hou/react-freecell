@@ -375,11 +375,11 @@ const initialState = {
     builder : []
 }
 
-let hasChildNode = (node) => {
+/* let hasChildNode = (node) => {
     if(node.childNodes === null) {
         return false;
     }
-}
+} */
 
 // create context - bring this into other files and components to use it
 export const GlobalContext = createContext(initialState);
@@ -388,7 +388,7 @@ export const GlobalContext = createContext(initialState);
 export const GlobalProvider = ({ children }) => { // children is destructured
     const [state, dispatch] = useReducer(AppReducer, initialState); // reducer uses dispatch
     var parentNode;
-    var childNode;
+    var draggedNode;
 
     let shuffleDeck = () => {
         dispatch({
@@ -404,15 +404,17 @@ export const GlobalProvider = ({ children }) => { // children is destructured
 
     // https://stackoverflow.com/a/27005502
     let allowDrop = (e) => {
-        console.log("allowDrop",e);
-        //var data = e.dataTransfer.getData("text");
-        
+        console.log("allowDropDragged",draggedNode);
+        console.log("allowDropDraggedR",draggedNode.indexOf("B", draggedNode.length-1));
         e.preventDefault();
-        if (e.target.getAttribute("draggable") === "true") {
+        console.log("allowDrop-e.target.offsetParent.id",e.target.offsetParent.id);
+        console.log("allowDrop-e.target.offsetParent.idR",e.target.offsetParent.id.indexOf("B", e.target.offsetParent.id.length-1));
+
+        if(e.target.offsetParent.id.indexOf("R", e.target.offsetParent.id.length-1) > 0 && draggedNode.indexOf("R", draggedNode.length-1) > 0) {
             e.dataTransfer.dropEffect = "none"; // dropping is not allowed
-        } else if(e.target.offsetParent && e.target.firstChild) {
-            //parentNode
-            console.log("allowDrop-e.target",e.target.offsetParent.id);
+        } else if(e.target.offsetParent.id.indexOf("B", e.target.offsetParent.id.length-1) > 0 && draggedNode.indexOf("B", draggedNode.length-1) > 0) {
+            e.dataTransfer.dropEffect = "none"; // dropping is not allowed
+        } else if (e.target.getAttribute("draggable") === "true") {
             e.dataTransfer.dropEffect = "none"; // dropping is not allowed
         } else {
             e.dataTransfer.dropEffect = "all"; // dropping is allowed
@@ -420,8 +422,9 @@ export const GlobalProvider = ({ children }) => { // children is destructured
     }
 
     let drag = (e) => {
-        console.log("drag",e);
-        e.dataTransfer.setData("text", e.target.id);
+        draggedNode = e.target.id;
+        e.dataTransfer.setData("text", draggedNode);
+        console.log("draggedId", draggedNode);
         /* dispatch({
             type: 'BLOCK_FREECELL',
             payload: e.target.id
